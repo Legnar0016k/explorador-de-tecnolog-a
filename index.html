@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>La Tecnología y la Evolución Humana: Un Análisis Interactivo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutral Palette -->
+    <!-- Application Structure Plan: La SPA utiliza una estructura temática y no lineal con una barra de navegación fija (Evolución, Uso Diario, La Paradoja, Conclusión). Este diseño fue elegido para dividir el denso ensayo en secciones interactivas y digeribles, permitiendo a los usuarios explorar los temas libremente en lugar de seguir una ruta rígida y lineal. 'Evolución' utiliza un gráfico de Chart.js para visualizar la jerarquía de prioridades tecnológicas. 'Uso Diario' emplea una cuadrícula de tarjetas para la información categorizada. 'La Paradoja' presenta un gráfico de barras conceptual e interactivo para visualizar el conflicto central, mejorando así el compromiso y la comprensión sobre un documento de texto estático. -->
+    <!-- Visualization & Content Choices: 1. Jerarquía de Necesidades -> Objetivo: Organizar prioridades históricas -> Visualización: Gráfico de Donut (Chart.js) -> Interacción: Pasar el cursor para ver detalles de cada etapa -> Justificación: Representa visualmente la jerarquía y el peso conceptual de cada área de desarrollo. 2. Áreas de Uso Diario -> Objetivo: Informar sobre la ubicuidad -> Visualización: Cuadrícula de tarjetas con iconos (HTML/Tailwind) -> Interacción: Clic en botones para mostrar/ocultar texto -> Justificación: Estructura la información de forma clara y accesible. 3. Paradoja (Pros/Contras) -> Objetivo: Comparar conceptos abstractos -> Visualización: Gráfico de Barras Interactivo (Chart.js) -> Interacción: Botones que actualizan los datos del gráfico para comparar diferentes aspectos (cognitivo/físico) -> Justificación: Un gráfico es la forma más efectiva de mostrar un equilibrio o conflicto. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #333D45;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #C57B57;
+            border-bottom-color: #C57B57;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #EAEAEA;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .control-btn {
+            background-color: #F1E4D9;
+            color: #333D45;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .control-btn:hover, .control-btn.active {
+            background-color: #C57B57;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-[#333D45]">Tecnología y Humanidad</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#evolucion" class="nav-link pb-1">Evolución</a>
+                <a href="#uso-diario" class="nav-link pb-1">Uso Diario</a>
+                <a href="#paradoja" class="nav-link pb-1">La Paradoja</a>
+                <a href="#conclusion" class="nav-link pb-1">Conclusión</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-2xl">☰</button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col space-y-2">
+            <a href="#evolucion" class="nav-link py-1">Evolución</a>
+            <a href="#uso-diario" class="nav-link py-1">Uso Diario</a>
+            <a href="#paradoja" class="nav-link py-1">La Paradoja</a>
+            <a href="#conclusion" class="nav-link py-1">Conclusión</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        
+        <section class="text-center mb-20">
+            <h2 class="text-3xl md:text-5xl font-bold mb-4 text-[#C57B57]">Un Motor Dual de Progreso y Paradoja</h2>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600">
+                Esta es una exploración interactiva de la simbiosis histórica entre la humanidad y la tecnología. Descubre por qué la usamos, cómo se ha integrado en nuestras vidas y la paradoja fundamental que presenta para nuestro futuro como especie.
+            </p>
+        </section>
+
+        <section id="evolucion" class="py-16">
+            <h3 class="text-3xl font-bold text-center mb-4">El Motor de la Tecnología: ¿Por Qué la Usamos?</h3>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">
+                El desarrollo tecnológico ha seguido una jerarquía de necesidades, desde la supervivencia básica hasta la recreación. Este gráfico ilustra el orden histórico de prioridades que ha impulsado la innovación humana. Pase el cursor sobre cada sección para ver su propósito fundamental.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="chart-container h-80 md:h-96">
+                    <canvas id="evolucionChart"></canvas>
+                </div>
+                <div id="evolucion-texto" class="p-6 bg-white rounded-lg shadow-sm border border-gray-200 min-h-[300px] flex items-center justify-center">
+                    <p class="text-xl text-gray-500 italic">Pase el cursor sobre el gráfico para explorar las etapas.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="uso-diario" class="py-16 bg-gray-50 -mx-6 px-6">
+            <h3 class="text-3xl font-bold text-center mb-4">Integración Total: La Tecnología en el Día a Día</h3>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">
+                Hoy, la tecnología no es una herramienta que usamos ocasionalmente; es la infraestructura invisible de la vida moderna. A continuación se detallan las áreas clave donde su presencia es constante y transformadora.
+            </p>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="card p-6 text-center">
+                    <span class="text-5xl mb-4 block">💬</span>
+                    <h4 class="text-xl font-bold mb-2">Comunicación</h4>
+                    <p class="text-gray-600">Desde la mensajería instantánea hasta las videollamadas, la tecnología ha acortado las distancias y acelerado el ritmo de nuestras interacciones sociales y profesionales.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <span class="text-5xl mb-4 block">🏠</span>
+                    <h4 class="text-xl font-bold mb-2">Hogar</h4>
+                    <p class="text-gray-600">La domótica y los dispositivos inteligentes han convertido nuestros hogares en ecosistemas conectados, optimizando desde la seguridad hasta el entretenimiento.</p>
+                </div>
+                 <div class="card p-6 text-center">
+                    <span class="text-5xl mb-4 block">❤️</span>
+                    <h4 class="text-xl font-bold mb-2">Salud</h4>
+                    <p class="text-gray-600">Los 'wearables' y aplicaciones de monitoreo nos permiten gestionar proactivamente nuestro bienestar, pasando de un enfoque reactivo a uno preventivo.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <span class="text-5xl mb-4 block">🚗</span>
+                    <h4 class="text-xl font-bold mb-2">Movilidad</h4>
+                    <p class="text-gray-600">La navegación por GPS y las plataformas de transporte han redefinido cómo nos movemos, haciendo los desplazamientos más eficientes y predecibles.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="paradoja" class="py-16">
+            <h3 class="text-3xl font-bold text-center mb-4">La Gran Paradoja de la Computación</h3>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">
+                La máxima eficiencia tecnológica nos enfrenta a una consecuencia inesperada: a medida que nuestras herramientas se vuelven más inteligentes, corremos el riesgo de debilitar nuestras propias capacidades. Explore el equilibrio entre el progreso y el costo humano.
+            </p>
+             <div class="text-center mb-8 space-x-2">
+                <button class="control-btn px-4 py-2 rounded-full font-semibold active" data-view="cognitivo">Impacto Cognitivo</button>
+                <button class="control-btn px-4 py-2 rounded-full font-semibold" data-view="fisico">Impacto Físico</button>
+            </div>
+            <div class="grid md:grid-cols-5 gap-8 items-center">
+                <div id="paradoja-texto-pro" class="md:col-span-2 text-right">
+                    <h4 class="font-bold text-xl mb-2 text-green-600">Progreso y Eficiencia</h4>
+                    <p class="text-gray-600">La computación automatiza tareas, acelera descubrimientos y multiplica la producción, liberándonos de cargas mentales y físicas repetitivas.</p>
+                </div>
+                <div class="md:col-span-1 flex justify-center text-4xl text-gray-300 font-thin">VS</div>
+                <div id="paradoja-texto-contra" class="md:col-span-2">
+                    <h4 class="font-bold text-xl mb-2 text-red-600">Dependencia y Debilidad</h4>
+                    <p class="text-gray-600">Al delegar funciones como la memoria o el esfuerzo físico, atrofiamos nuestras habilidades innatas, generando una fragilidad sin precedentes.</p>
+                </div>
+            </div>
+            <div class="chart-container mt-12 h-80 md:h-96">
+                <canvas id="paradojaChart"></canvas>
+            </div>
+        </section>
+
+        <section id="conclusion" class="py-16 border-t border-gray-200">
+             <h3 class="text-3xl font-bold text-center mb-4">Conclusión: La Necesidad de Conciencia</h3>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-8">
+               El progreso tecnológico es inevitable y beneficioso, pero el verdadero desafío futuro no es crear más, sino gestionar lo que tenemos. Debemos usar la tecnología como una herramienta para aumentar nuestras capacidades, no para reemplazarlas.
+            </p>
+            <div class="text-center">
+                <p class="text-lg font-semibold">"La próxima gran invención no será un dispositivo, sino una forma sostenible de relacionarnos con todo lo que hemos creado."</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Análisis Interactivo. Una visualización basada en el ensayo "La Tecnología y la Evolución Humana".</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.4
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            const evolucionData = {
+                labels: ['Armas y Herramientas', 'Medicina', 'Manufactura', 'Computación', 'Recreación'],
+                datasets: [{
+                    label: 'Prioridad Histórica',
+                    data: [40, 25, 20, 10, 5],
+                    backgroundColor: ['#C57B57', '#F1A66A', '#F7D488', '#9DBF9E', '#6A99A2'],
+                    hoverOffset: 4,
+                    borderColor: '#FDFBF8',
+                    borderWidth: 3
+                }]
+            };
+
+            const evolucionTextos = {
+                'Armas y Herramientas': '<strong>Supervivencia y Supremacía:</strong> La primera razón del desarrollo tecnológico fue la seguridad y el control del entorno para asegurar la existencia.',
+                'Medicina': '<strong>Calidad de Vida:</strong> Una vez asegurada la supervivencia, el enfoque se dirigió a prolongar y mejorar la calidad de vida, combatiendo enfermedades.',
+                'Manufactura': '<strong>Abundancia y Eficiencia:</strong> La industrialización buscó incrementar la producción y generar economías de escala, haciendo el trabajo físico más rápido y menos dependiente.',
+                'Computación': '<strong>Optimización Total:</strong> Representa el salto a la eficiencia cognitiva y productiva, diseñada para hacer más con menos esfuerzo en todos los campos.',
+                'Recreación': '<strong>Ocio y Conexión:</strong> La fase final, que atiende a la necesidad humana de entretenimiento y conexión social una vez que las otras necesidades están cubiertas.'
+            };
+
+            const evolucionCtx = document.getElementById('evolucionChart').getContext('2d');
+            const evolucionChart = new Chart(evolucionCtx, {
+                type: 'doughnut',
+                data: evolucionData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label;
+                                }
+                            }
+                        }
+                    },
+                    onHover: (event, chartElement) => {
+                        const textoContainer = document.getElementById('evolucion-texto');
+                        if (chartElement.length > 0) {
+                            const index = chartElement[0].index;
+                            const label = evolucionData.labels[index];
+                            textoContainer.innerHTML = evolucionTextos[label];
+                        } else {
+                             textoContainer.innerHTML = '<p class="text-xl text-gray-500 italic">Pase el cursor sobre el gráfico para explorar las etapas.</p>';
+                        }
+                    }
+                }
+            });
+
+            const paradojaData = {
+                cognitivo: {
+                    labels: ['Productividad', 'Acceso a Info', 'Memoria Humana', 'Orientación'],
+                    datasets: [{
+                        label: 'Aumento (Progreso)',
+                        data: [90, 95, 0, 0],
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        stack: 'stack 0'
+                    }, {
+                        label: 'Disminución (Costo)',
+                        data: [0, 0, -60, -75],
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        stack: 'stack 0'
+                    }]
+                },
+                fisico: {
+                    labels: ['Comodidad', 'Seguridad Física', 'Actividad Diaria', 'Fuerza Bruta'],
+                    datasets: [{
+                        label: 'Aumento (Progreso)',
+                        data: [90, 70, 0, 0],
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        stack: 'stack 0'
+                    }, {
+                        label: 'Disminución (Costo)',
+                        data: [0, 0, -80, -90],
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        stack: 'stack 0'
+                    }]
+                }
+            };
+            
+            const paradojaCtx = document.getElementById('paradojaChart').getContext('2d');
+            const paradojaChart = new Chart(paradojaCtx, {
+                type: 'bar',
+                data: paradojaData.cognitivo,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += Math.abs(context.parsed.x) + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return Math.abs(value) + '%';
+                                }
+                            },
+                             grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                             grid: {
+                                color: '#eee'
+                            }
+                        }
+                    }
+                }
+            });
+
+            const controlBtns = document.querySelectorAll('.control-btn');
+            controlBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    controlBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const view = btn.dataset.view;
+                    paradojaChart.data = paradojaData[view];
+                    paradojaChart.update();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
